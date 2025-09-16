@@ -1,5 +1,6 @@
 package com.example.impostergame.Screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -16,11 +17,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.GenericShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +46,7 @@ import androidx.navigation.NavController
 import com.example.impostergame.GameSetupViewModel
 import com.example.impostergame.PlayViewModel
 import com.example.impostergame.R
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -83,6 +94,41 @@ fun PlayScreen(
         label = "btnHeight"
     )
 
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) {
+        showExitDialog = true
+    }
+
+    if (showExitDialog) {
+        AlertDialog(
+            onDismissRequest = { showExitDialog = false },
+            title = { Text("Game in progress") },
+            text = { Text("Are you sure you want to quit?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showExitDialog = false
+                    // reset and go home
+
+                    navController.navigate("gameSetup") {
+                        popUpTo("gameSetup") { inclusive = true }
+                    }
+                }) {
+                    Text("Quit", color = Color.Red)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showExitDialog = false }) {
+                    Text("Cancel")
+                }
+            },
+            containerColor = Color.Black,
+            titleContentColor = Color.White,
+            textContentColor = Color.White
+        )
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,6 +137,8 @@ fun PlayScreen(
             ),
         contentAlignment = Alignment.Center
     ) {
+
+
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -105,6 +153,8 @@ fun PlayScreen(
                     .size(screenWidth * 0.2f),
                 tint = Color.Unspecified
             )
+
+
 
             Spacer(modifier = Modifier.height(screenHeight * 0.07f))
 
@@ -180,6 +230,9 @@ fun PlayScreen(
 
             )
         }
+
+
+
     }
 }
 

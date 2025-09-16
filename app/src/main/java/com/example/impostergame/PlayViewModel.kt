@@ -135,4 +135,18 @@ class PlayViewModel : ViewModel() {
     fun getAllImposters(): List<String> = allImposters.toList()
 
 
+    fun resetRound() {
+        currentPlayerIndex.value = 0
+        isWordRevealed.value = false
+        currentWord.value = "Press and hold to reveal word"
+        activePlayers.clear()
+        playerWords.clear()
+        imposterNames.clear()
+        allImposters.clear()
+        gameOver.value = false
+        winner.value = ""
+    }
+
+
+
 }

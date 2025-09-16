@@ -20,7 +20,7 @@ fun Navigation(){
             SplashScreen(navController = navController)
         }
 
-        composable("home"){ HomeScreen(navController = navController) }
+        composable("home"){ HomeScreen(navController = navController, viewModel = gameSetupViewModel) }
 
         composable("howtoPlayScreen") { HowtoPlay(navController = navController) }
 
@@ -50,7 +50,7 @@ fun Navigation(){
             arguments = listOf(navArgument("winner") { type = NavType.StringType })
         ) { backStackEntry ->
             val winner = backStackEntry.arguments?.getString("winner") ?: ""
-            GameOverScreen(navController = navController, winner = winner, playViewModel = playViewModel)
+            GameOverScreen(navController = navController, winner = winner, playViewModel = playViewModel, gameSetupViewModel = gameSetupViewModel )
         }
 
 

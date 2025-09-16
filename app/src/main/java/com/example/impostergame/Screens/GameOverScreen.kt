@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.impostergame.GameSetupViewModel
 import com.example.impostergame.PlayViewModel
 import kotlinx.coroutines.delay
 
@@ -35,6 +36,7 @@ import kotlinx.coroutines.delay
 fun GameOverScreen(
     navController: NavController,
     playViewModel: PlayViewModel,
+    gameSetupViewModel: GameSetupViewModel,
     winner: String,
     imposters: List<String> = emptyList() // Pass imposters list here
 ) {
@@ -150,7 +152,12 @@ fun GameOverScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { navController.navigate("home") { popUpTo("gameOver") { inclusive = true } } },
+            onClick = {
+                gameSetupViewModel.resetGame()
+                playViewModel.resetRound()
+
+                navController.navigate("home") {
+                    popUpTo(0) { inclusive = true } } },
             colors = ButtonDefaults.buttonColors(containerColor = homeColor),
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier

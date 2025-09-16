@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.impostergame.ui.theme.ImposterGameTheme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        FirebaseApp.initializeApp(this) // 👈 this starts Firebase
         setContent {
             ImposterGameTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -62,5 +64,15 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+
+    // Firebase products
+    implementation("com.google.firebase:firebase-analytics")
+
+    implementation ("com.google.firebase:firebase-firestore")
+
+
 
 }
