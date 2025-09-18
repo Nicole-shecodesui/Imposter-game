@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.impostergame.BannerAdView
 import com.example.impostergame.GameSetupViewModel
 import com.example.impostergame.R
 import com.google.firebase.Firebase
@@ -198,6 +199,9 @@ fun HomeScreen(navController: NavController, viewModel: GameSetupViewModel ) {
 
         }
 
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         // Footer
         Text(
             text = "Made with ❤️ by Angwenyi",
@@ -205,6 +209,9 @@ fun HomeScreen(navController: NavController, viewModel: GameSetupViewModel ) {
             textAlign = TextAlign.Center,
             color = Color.Black
         )
+        Spacer(modifier = Modifier.height(6.dp))
+
+        BannerAdView()
     }
 
     // Exit confirmation dialog

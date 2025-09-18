@@ -13,13 +13,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.impostergame.ui.theme.ImposterGameTheme
+import com.google.android.gms.ads.MobileAds
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var analytics: FirebaseAnalytics
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        FirebaseApp.initializeApp(this) // 👈 this starts Firebase
+        FirebaseApp.initializeApp(this) // starts Firebase
+        analytics = Firebase.analytics
+
+        // ✅ Initialize AdMob SDK
+        MobileAds.initialize(this) { initializationStatus ->
+            // Optional: check adapters status here
+        }
+
         setContent {
             ImposterGameTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

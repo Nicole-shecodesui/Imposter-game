@@ -1,11 +1,14 @@
 package com.example.impostergame
 
+import android.os.Bundle
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.analytics.FirebaseAnalytics
 
-class PlayViewModel : ViewModel() {
+class PlayViewModel(private val analytics: FirebaseAnalytics) : ViewModel() {
     var currentPlayerIndex = mutableStateOf(0)
         private set
 
@@ -19,8 +22,6 @@ class PlayViewModel : ViewModel() {
 
 
     val activePlayers = mutableStateListOf<String>()
-
-
 
     // Maps player names to their words
     val playerWords = mutableStateMapOf<String, String>()
@@ -75,6 +76,16 @@ class PlayViewModel : ViewModel() {
         gameOver.value = false
         winner.value = ""
 
+
+        val bundle = Bundle().apply {
+            putString("category", selectedCategory)
+            putLong("players_count", players.size.toLong())
+            putLong("imposters_count", numberOfImposters.toLong())
+        }
+        analytics.logEvent("round_start", bundle)
+
+
+
     }
 
     fun isPlayerImposter(playerName: String): Boolean {
@@ -88,7 +99,6 @@ class PlayViewModel : ViewModel() {
         activePlayers.remove(playerName)   // remove from button UI
         playerWords.remove(playerName)     // clean word
         imposterNames.remove(playerName)   // update imposters
-
         checkGameOver()
     }
 
@@ -126,6 +136,17 @@ class PlayViewModel : ViewModel() {
                 gameOver.value = true
             }
         }
+        if (gameOver.value) {
+            val remainingImposters = activePlayers.count { it in imposterNames }
+            val bundle = Bundle().apply {
+                putString("winner", winner.value)
+                putLong("remaining_players", activePlayers.size.toLong())
+                putLong("remaining_imposters", remainingImposters.toLong())
+            }
+            analytics.logEvent("game_over", bundle)
+        }
+
+
     }
 
     fun remainingPlayersCount(): Int = activePlayers.size
@@ -147,6 +168,16 @@ class PlayViewModel : ViewModel() {
         winner.value = ""
     }
 
+}
 
-
+// 🔹 Factory to create PlayViewModel with FirebaseAnalytics
+class PlayViewModelFactory(private val analytics: FirebaseAnalytics) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(PlayViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return PlayViewModel(analytics) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

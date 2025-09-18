@@ -54,7 +54,7 @@ fun SplashScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(Color(0xFF4F2525)) // a soft lilac-green
         ,
         contentAlignment = Alignment.Center
     ) {

@@ -13,6 +13,13 @@
         android:theme="@style/Theme.ImposterGame"
         tools:targetApi="31"
         android:enableOnBackInvokedCallback="true">
+
+        <!-- ✅ Add your AdMob App ID here -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2086245291423900~9448350578"/>
+        <!-- replace with your real App ID -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

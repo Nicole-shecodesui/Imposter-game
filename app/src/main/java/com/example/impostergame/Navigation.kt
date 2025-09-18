@@ -1,6 +1,8 @@
 package com.example.impostergame
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -8,12 +10,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.impostergame.Screens.*
+import com.google.firebase.analytics.FirebaseAnalytics
 
 @Composable
 fun Navigation(){
     val navController = rememberNavController()
     val gameSetupViewModel: GameSetupViewModel = viewModel()
-    val playViewModel: PlayViewModel = viewModel()
+
+    // ✅ Create PlayViewModel with factory
+    val context = LocalContext.current
+    val analytics = FirebaseAnalytics.getInstance(context)
+    val factory = remember { PlayViewModelFactory(analytics) }
+    val playViewModel: PlayViewModel = viewModel(factory = factory)
+
 
     NavHost(navController = navController, startDestination = "splash"){
         composable("splash"){

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.impostergame.BannerAdView
 import com.example.impostergame.GameSetupViewModel
 import com.example.impostergame.PlayViewModel
 import kotlinx.coroutines.delay
@@ -168,6 +169,23 @@ fun GameOverScreen(
             Text("Home", color = Color.White, fontSize = 18.sp)
         }
     }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Made with ❤️ by Angwenyi",
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            BannerAdView()
+        }
+    }
+
 }
 
 

@@ -73,6 +73,7 @@ dependencies {
 
     implementation ("com.google.firebase:firebase-firestore")
 
+    implementation("com.google.android.gms:play-services-ads:24.6.0")
 
 
 }
