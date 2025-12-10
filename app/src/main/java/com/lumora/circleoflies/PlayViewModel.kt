@@ -1,4 +1,4 @@
-package com.example.impostergame
+package com.lumora.circleoflies
 
 import android.os.Bundle
 import androidx.compose.runtime.mutableStateListOf

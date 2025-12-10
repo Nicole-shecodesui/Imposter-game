@@ -1,4 +1,4 @@
-package com.example.impostergame
+package com.lumora.circleoflies
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
@@ -14,7 +14,5 @@ fun BannerAdView() {
             adUnitId = "ca-app-pub-2086245291423900/5482891693" // ✅ Test banner
             loadAd(AdRequest.Builder().build())
         }
-    }, update = {
-        it.loadAd(AdRequest.Builder().build())
-    })
+    }, )
 }

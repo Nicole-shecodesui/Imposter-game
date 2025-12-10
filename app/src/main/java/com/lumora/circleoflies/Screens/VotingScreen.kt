@@ -1,4 +1,4 @@
-package com.example.impostergame.Screens
+package com.lumora.circleoflies.Screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
@@ -37,9 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.impostergame.BannerAdView
-import com.example.impostergame.GameSetupViewModel
-import com.example.impostergame.PlayViewModel
+import com.lumora.circleoflies.BannerAdView
+import com.lumora.circleoflies.GameSetupViewModel
+import com.lumora.circleoflies.PlayViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -244,6 +244,16 @@ fun VotingScreen(
         ) {
             Text("Eliminate", color = Color.White, fontSize = (screenWidth.value * 0.045f).sp)
         }
+        Spacer(modifier = Modifier.height(screenHeight * 0.015f))
+
+        Text(
+            text = "(All players must agree before choosing.)",
+            fontSize = (screenWidth.value * 0.035f).sp,
+            color = Color.Red,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 12.dp)
+        )
+
 
 
     }

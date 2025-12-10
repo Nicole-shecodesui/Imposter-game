@@ -1,4 +1,4 @@
-package com.example.impostergame.Screens
+package com.lumora.circleoflies.Screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

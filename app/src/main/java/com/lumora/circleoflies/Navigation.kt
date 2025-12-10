@@ -1,4 +1,4 @@
-package com.example.impostergame
+package com.lumora.circleoflies
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.impostergame.Screens.*
+import com.lumora.circleoflies.Screens.*
 import com.google.firebase.analytics.FirebaseAnalytics
 
 @Composable

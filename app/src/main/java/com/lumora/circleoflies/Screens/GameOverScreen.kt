@@ -1,10 +1,9 @@
-package com.example.impostergame.Screens
+package com.lumora.circleoflies.Screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -27,10 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.impostergame.BannerAdView
-import com.example.impostergame.GameSetupViewModel
-import com.example.impostergame.PlayViewModel
+import com.lumora.circleoflies.BannerAdView
+import com.lumora.circleoflies.GameSetupViewModel
+import com.lumora.circleoflies.PlayViewModel
 import kotlinx.coroutines.delay
 
 @Composable

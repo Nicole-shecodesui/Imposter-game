@@ -1,4 +1,4 @@
-package com.example.impostergame
+package com.lumora.circleoflies
 
 object WordRepository {
 

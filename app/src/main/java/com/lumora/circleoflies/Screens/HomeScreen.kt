@@ -1,6 +1,9 @@
-package com.example.impostergame.Screens
+package com.lumora.circleoflies.Screens
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,16 +36,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.impostergame.BannerAdView
-import com.example.impostergame.GameSetupViewModel
-import com.example.impostergame.R
+import com.lumora.circleoflies.BannerAdView
+import com.lumora.circleoflies.GameSetupViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.lumora.circleoflies.R
+
 
 
 @Composable
@@ -67,34 +69,49 @@ fun HomeScreen(navController: NavController, viewModel: GameSetupViewModel ) {
 
     var showConfirmation by remember { mutableStateOf(false) }
 
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+
 
     if (showFeedbackDialog) {
         FeedbackDialog(
             onDismiss = { showFeedbackDialog = false },
             onSubmit = { feedback ->
 
-                val db = Firebase.firestore
-                val feedbackData = hashMapOf(
-                    "message" to feedback,
-                    "timestamp" to System.currentTimeMillis()
-                )
+                // Don't try to return from here — use if/else control flow
+                if (!isOnline(context)) {
+                    println("❌ No internet, cannot send feedback")
+                    showErrorDialog = true
+                    errorMessage = "No internet connection. Please try again."
+                } else {
+                    println("📨 Sending feedback to Firestore...")
+                    val db = Firebase.firestore
+                    val feedbackData = hashMapOf(
+                        "message" to feedback,
+                        "timestamp" to System.currentTimeMillis()
+                    )
 
-                db.collection("feedback")
-                    .add(feedbackData)
-                    .addOnSuccessListener {
-                        println("Feedback saved!")
-                        // TODO: Show a confirmation dialog/snackbar here
-                    }
-                    .addOnFailureListener { e ->
-                        println("Error saving feedback: $e")
-                    }
+                    db.collection("feedback")
+                        .add(feedbackData)
+                        .addOnSuccessListener { docRef ->
+                            println("🔥 FIRESTORE SUCCESS: Feedback saved with ID = ${docRef.id}")
+                            // close the feedback dialog and show confirmation
+                            showFeedbackDialog = false
+                            showConfirmation = true
+                        }
+                        .addOnFailureListener { e ->
+                            println("❌ FIRESTORE ERROR: ${e.message}")
+                            showFeedbackDialog = false
+                            showErrorDialog = true
+                            errorMessage = "Something went wrong while sending your feedback. Please try again."
 
-                showFeedbackDialog = false
-
-                showConfirmation = true
+                        }
+                }
             }
         )
     }
+
 
     if (showConfirmation) {
         AlertDialog(
@@ -108,6 +125,20 @@ fun HomeScreen(navController: NavController, viewModel: GameSetupViewModel ) {
             }
         )
     }
+
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("Error") },
+            text = { Text(errorMessage) },
+            confirmButton = {
+                TextButton(onClick = { showErrorDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
 
     BackHandler {
         showExitDialog = true
@@ -166,11 +197,14 @@ fun HomeScreen(navController: NavController, viewModel: GameSetupViewModel ) {
                                 showFeedbackDialog = true
                             }
                             "share" -> {
+                                val playStoreLink = "https://play.google.com/store/apps/details?id=com.lumora.circleoflies"
+
                                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                     type = "text/plain"
                                     putExtra(
                                         Intent.EXTRA_TEXT,
-                                        "Hey! 🎮 Join me in playing the Imposter game. Download it here: <your_link_here>"
+                                        "I bet you can’t find the imposter… \uD83D\uDE08  \n" +
+                                                "Join the fun: \\n$playStoreLink"
                                     )
                                 }
                                 context.startActivity(
@@ -252,7 +286,6 @@ fun FeedbackDialog(
         text = {
             Column {
                 Text("We’d love to hear your thoughts!")
-
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = feedbackText,
@@ -264,8 +297,9 @@ fun FeedbackDialog(
         confirmButton = {
             TextButton(onClick = {
                 if (feedbackText.isNotBlank()) {
-                    onSubmit(feedbackText)
-                    onDismiss()
+                    println("📨 Submitting feedback: $feedbackText")
+                    onSubmit(feedbackText)   // send to Firestore
+                    onDismiss()              // MUST close dialog here!
                 }
             }) {
                 Text("Submit")
@@ -278,4 +312,13 @@ fun FeedbackDialog(
         }
     )
 }
+
+
+fun isOnline(context: Context): Boolean {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = cm.activeNetwork ?: return false
+    val capabilities = cm.getNetworkCapabilities(network) ?: return false
+    return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+}
+
 

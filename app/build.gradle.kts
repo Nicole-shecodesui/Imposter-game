@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.impostergame"
+    namespace = "com.lumora.circleoflies"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.impostergame"
+        applicationId = "com.lumora.circleoflies"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

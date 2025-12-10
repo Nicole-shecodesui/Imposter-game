@@ -1,7 +1,6 @@
-package com.example.impostergame.Screens
+package com.lumora.circleoflies.Screens
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,15 +17,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.impostergame.GameSetupViewModel
-import com.example.impostergame.R
+import com.lumora.circleoflies.GameSetupViewModel
 import kotlinx.coroutines.launch
+import com.lumora.circleoflies.R
+
 
 @Composable
 fun GameSetup(navController: NavController, viewModel: GameSetupViewModel ) {
@@ -53,10 +50,14 @@ fun GameSetup(navController: NavController, viewModel: GameSetupViewModel ) {
 
 
     val categories = listOf(
-        "Animals", "Food & Drinks",
-        "Movies & TV", "Everyday Objects",
-        "Music", "Sports",
-        "Clothes", "Kenyan Things"
+        "Animals" to R.drawable.animals,
+        "Food & Drinks" to R.drawable.food,
+        "Movies & TV" to R.drawable.tv,
+        "Everyday Objects" to R.drawable.objects,
+        "Music" to R.drawable.music,
+        "Sports" to R.drawable.sports,
+        "Clothes" to R.drawable.clothes,
+        "Kenyan Things" to R.drawable.kenya
     )
 
     // ✅ Catch phone back press
@@ -213,26 +214,40 @@ fun GameSetup(navController: NavController, viewModel: GameSetupViewModel ) {
             modifier = Modifier.fillMaxWidth()
         ) {
             items(categories.size) { index ->
-                val category = categories[index]
+                val (category, imageRes) = categories[index]
                 Button(
                     onClick = { viewModel.selectedCategory = category },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(buttonHeight),
+                        .height(buttonHeight * 1.2f),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (viewModel.selectedCategory == category)
                             Color(0xFF722f37) else Color(0xFF2D5A41)
                     ),
                     shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp) // Control inner padding
+                    contentPadding = PaddingValues(6.dp) // Control inner padding
 
                 ) {
-                    Text(
-                        text = category,
-                        color = Color.White,
-                        fontSize = categoryFontSize,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Image(
+                            painter = painterResource(id = imageRes),
+                            contentDescription = category,
+                            modifier = Modifier
+                                .size(buttonHeight * 1f) // PERFECT size – not too big
+                                .padding(end = 10.dp)
+                        )
+
+                        Text(
+                            text = category,
+                            color = Color.White,
+                            fontSize = categoryFontSize,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }

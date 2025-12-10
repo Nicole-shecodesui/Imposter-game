@@ -1,4 +1,4 @@
-package com.example.impostergame.ui.theme
+package com.lumora.circleoflies.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.impostergame.Screens
+package com.lumora.circleoflies.Screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,7 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.impostergame.GameSetupViewModel
+import com.lumora.circleoflies.GameSetupViewModel
 
 @Composable
 fun players(navController: NavController,
